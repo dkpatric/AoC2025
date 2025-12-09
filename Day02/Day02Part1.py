@@ -1,4 +1,4 @@
-# Day02
+# Day02 - Part1
 
 def find_repeats(number):
     num_str = str(number)
