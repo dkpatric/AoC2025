@@ -1,46 +1,36 @@
 # Day03 Part 2
 
-def process_file(filename):
+def process_file(filename, span):
     sum = 0
 
-    with open(filename) as file:
-        for line in file:
-            bank = line.strip()
-            print(f"### bank:        {bank}")
-            # find the highest number in first 12 digits
-            sorted_bank = "".join(sorted(bank[0:12], reverse=True))
-            print(f"### sorted_bank: {sorted_bank}")
-            # find the highest number after the tens position location
-            # sorted_bank = "".join(sorted(bank[loc1 + 1:], reverse=True))
-            # print(f"### sorted_bank: {sorted_bank}")
-            # ones = sorted_bank[0]
-            # joltage = int(tens + ones)
-            # print(f"joltage: {joltage}\n")
-            # sum += joltage
-            # break
+    for  digits in [span]:
+        with open(filename) as file:
+            for line in file:
+                # print(f"\nline: {line.strip()}")
+                line = list(line.strip())
+
+                # set bounds
+                start = 0
+                end = len(line) - digits
+
+                for i in range(digits):
+                    subset = line[start:end+1]
+                    # print(f"max(subset): {max(subset)}")
+                    # print(f"subset.index(max(subset)): {subset.index(max(subset))}")
+                    index = subset.index(max(subset))
+                    # print(f"index: {index}")
+                    # print(f"adding to sum: {int(subset[index]) * (10 ** (digits - i - 1))}")
+                    sum += (int(subset[index]) * (10 ** (digits - i - 1)))
+                    start = start + index + 1
+                    end += 1
+        # print(f"For {digits:2} digits the solution is {sum}")
 
     return sum
 
-def test(filename):
-    sum = 0
+# 2 batteries per bank
+# print(f"total joltage: {process_file("Day03/testdata.txt", 2)}")
+# print(f"total joltage: {process_file("Day03/realdata.txt", 2)}")
 
-    with open(filename) as file:
-        for line in file:
-            bank = line.strip()
-            print(f"### bank:        {bank}")
-            # find the highest number in first 12 digits
-            sorted_bank = "".join(sorted(bank[0:12], reverse=True))
-            print(f"### sorted_bank: {sorted_bank}")
-            # find the highest number after the tens position location
-            # sorted_bank = "".join(sorted(bank[loc1 + 1:], reverse=True))
-            # print(f"### sorted_bank: {sorted_bank}")
-            # ones = sorted_bank[0]
-            # joltage = int(tens + ones)
-            # print(f"joltage: {joltage}\n")
-            # sum += joltage
-            # break
-
-    return sum
-
-test("Day03/testdata.txt")
-# print(f"total joltage: {process_file("Day03/realdata.txt")}")
+# 12 batteries per bank
+# print(f"total joltage: {process_file("Day03/testdata.txt", 12)}")
+print(f"total joltage: {process_file("Day03/realdata.txt", 12)}")
